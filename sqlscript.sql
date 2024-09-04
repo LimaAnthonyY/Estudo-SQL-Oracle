@@ -1,3 +1,5 @@
+-- Creating Tables
+
 create table DEPARTMENTS (   -- Início da definição da tabela  
   deptno        number,  -- Coluna para o número do departamento (tipo numérico)  
   name          varchar2(50) not null,  -- Coluna para o nome do departamento (máx. 50 caracteres), não pode ser nula   
@@ -18,6 +20,9 @@ create table EMPLOYEES (
   constraint fk_employees_deptno foreign key (deptno)  -- Definir a coluna deptno como chave estrangeira    
       references DEPARTMENTS (deptno)  -- Referenciar a coluna deptno na tabela DEPARTMENTS  
 );
+
+
+-- Creating Triggers
 
 create or replace trigger DEPARTMENTS_BIU 
     before insert or update on DEPARTMENTS  -- Este trigger é acionado antes de uma operação de INSERT ou UPDATE na tabela DEPARTMENTS 
@@ -46,6 +51,9 @@ begin
     end if;  
 end; 
 /
+
+
+-- Inserting Data
 
 insert into departments (name, location) values  
    ('Finance', 'New York' -- Inserir um departamento chamado 'Finance' localizado em 'New York'  
@@ -88,6 +96,9 @@ insert into EMPLOYEES
      from departments  
      where name = 'Development'))  -- Nome do departamento utilizado para encontrar o deptno ;
 
+
+-- Indexing Columns
+  
 select table_name "Table",  -- Nome da tabela 
        index_name "Index",  -- Nome do índice 
        column_name "Column",  -- Nome da coluna no índice 
@@ -108,6 +119,9 @@ on employees (name)  -- Tabela e coluna para o índice ;
 select *  -- Seleciona todas as colunas da tabela 
 from departments  -- Especifica a tabela 'departments' da qual os dados serão recuperados ;
 
+
+-- Querying Data
+  
 select *  -- Seleciona todas as colunas da tabela 
 from departments  -- Especifica a tabela 'departments' da qual os dados serão recuperados ;
 
@@ -127,9 +141,15 @@ select e.name employee,  -- Nome do empregado
 from employees e  -- Tabela dos empregados 
 order by e.name  -- Ordenar os resultados pelo nome do empregado ;
 
+
+-- Adding Columns
+  
 alter table EMPLOYEES  -- Inicia a alteração da tabela EMPLOYEES 
 add country_code varchar2(2)  -- Adiciona uma coluna chamada country_code do tipo VARCHAR2 com comprimento 2 ;
 
+
+-- Querying the Oracle Data Dictionary
+  
 select table_name,  -- Nome da tabela 
        tablespace_name,  -- Nome do tablespace onde a tabela está armazenada 
        status  -- Status da tabela 
@@ -143,6 +163,9 @@ from user_tab_columns  -- Visualizar colunas das tabelas do usuário
 where table_name = 'EMPLOYEES'  -- Filtro para a tabela EMPLOYEES 
 order by column_id  -- Ordenar os resultados pelo identificador da coluna ;
 
+
+-- Updating Data
+  
 update employees  -- Tabela a ser atualizada 
 set country_code = 'US'  -- Novo valor para a coluna country_code ;
 
@@ -150,6 +173,9 @@ update employees  -- Tabela a ser atualizada
 set commission = 2000  -- Novo valor para a coluna commission 
 where name = 'Sam Smith'  -- Condição para selecionar o empregado específico ;
 
+
+-- Aggregate Queries
+  
 select name,  -- Nome do empregado 
        country_code,  -- Código do país do empregado 
        salary,  -- Salário do empregado 
@@ -165,12 +191,27 @@ select
       max(salary + nvl(commission,0)) max_compensation  -- Maior valor de compensação (salário + comissão, considerando comissão como 0 se nula) 
 from employees  -- Fonte dos dados ;
 
+
+-- Compressing Data
+  
 alter table EMPLOYEES compress for oltp  -- Compressão para OLTP ;
 
 alter table DEPARTMENTS compress for oltp  -- Compressão para OLTP ;
 
+
+-- Deleting Data
+  
 DELETE FROM employees  -- Especifica a tabela da qual os registros serão excluídos 
 WHERE name = 'Sam Smith' -- Define a condição para a exclusão: somente os registros onde o valor da coluna "name" é exatamente 'Sam Smith' serão removidos. ;
+
+
+-- Dropping Tables
+
+drop table departments cascade constraints;  -- Remove a tabela 'departments' e todas as restrições associadas
+drop table employees cascade constraints;  -- Remove a tabela 'employees' e todas as restrições associadas
+
+
+-- Un-dropping Tables
 
 select object_name,               -- Nome do objeto na lixeira 
        original_name,             -- Nome original do objeto antes de ir para a lixeira 
@@ -180,22 +221,17 @@ select object_name,               -- Nome do objeto na lixeira
 from recyclebin                -- Consulta a tabela de lixeira do banco de dados ;
 
 flashback table DEPARTMENTS to before drop -- Restaura a tabela DEPARTMENTS 
-
-
-select object_name,               -- Nome do objeto na lixeira 
-       original_name,             -- Nome original do objeto antes de ir para a lixeira 
-       type,                      -- Tipo do objeto (por exemplo, tabela, índice) 
-       can_undrop,                -- Indica se o objeto pode ser recuperado da lixeira 
-       can_purge                  -- Indica se o objeto pode ser excluído permanentemente 
-from recyclebin                -- Consulta a tabela de lixeira do banco de dados ;
+;
 
 flashback table EMPLOYEES to before drop -- Restaura a tabela EMPLOYEES
 ;
 
 
 select count(*) departments              -- Conta o total de registros na tabela DEPARTMENTS 
-from departments                       -- Da tabela DEPARTMENTS ;
+from departments                       -- Da tabela DEPARTMENTS 
+;
 
 select count(*) employees               -- Conta o total de registros na tabela EMPLOYEES 
-from employees                        -- Da tabela EMPLOYEES ;
+from employees                        -- Da tabela EMPLOYEES 
+;
 
