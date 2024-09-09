@@ -36,7 +36,7 @@ Aqui estão alguns recursos adicionais que podem ser úteis durante o aprendizad
 
 ## Licença
 
-Este projeto está licenciado portanto fiquem avontade para utilizarem o material para estudos.
+Este projeto não está licenciado e estou utilizando tudo para estudos e desenvolvimento profissional, portanto fiquem avontade para utilizarem o material para estudos.
 
 ---
 
